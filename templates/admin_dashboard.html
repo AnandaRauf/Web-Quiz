@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .logout-button {
+            background-color: #f44336;
+            margin-top: 20px;
+        }
+
+        .logout-button:hover {
+            background-color: #d7372f;
+        }
+
+        h2 {
+            margin-top: 40px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            font-size: 16px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons form {
+            display: inline;
+        }
+
+        .buttons button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .buttons button.edit {
+            background-color: #ff9800;
+        }
+
+        .buttons button:hover {
+            opacity: 0.9;
+        }
+        
+        .admin-info {
+            margin-bottom: 20px;
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Admin Dashboard</h1>
+        
+        <!-- Admin Info -->
+        <div class="admin-info">
+            <p><strong>Name:</strong> {{ admin.name }}</p>
+            <p><strong>Email:</strong> {{ admin.email }}</p>
+        </div>
+        
+        <form method="post">
+            <label for="question">Add Question:</label>
+            <input type="text" name="question" id="question" required>
+            <button type="submit">Add</button>
+        </form>
+
+        <h2>All Questions</h2>
+        <ul>
+            {% for question in questions %}
+            <li>
+                {{ question.text }}
+                <div class="buttons">
+                    <form action="{{ url_for('edit_question', question_id=question.id) }}" method="get">
+                        <button class="edit" type="submit">Edit</button>
+                    </form>
+                    <form action="{{ url_for('delete_question', question_id=question.id) }}" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Tombol Logout -->
+        <form action="{{ url_for('logout') }}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
